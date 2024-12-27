@@ -1,4 +1,4 @@
-package com.vkraft.training;
+package com.vkraft.training.lms;
 
 public class Book {
 	private String title;

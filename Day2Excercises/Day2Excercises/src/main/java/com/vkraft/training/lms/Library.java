@@ -1,4 +1,4 @@
-package com.vkraft.training;
+package com.vkraft.training.lms;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,17 +13,6 @@ public class Library {
 	public void addBook(Book book) {
 		books.add(book);
 		System.out.println("Book added to the library ---> " + book.getISBN());
-	}
-
-	public void removeBook(String ISBN) {
-		for (Book book : books) {
-			if (book.getISBN().equals(ISBN)) {
-				books.remove(book);
-				System.out.println("Book removed from the library ---> " + ISBN);
-				return ;
-			}
-		}
-		System.out.println("Book not found in the library ---> " + ISBN);
 	}
 
 	public Book findBook(String ISBN) {

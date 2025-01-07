@@ -12,6 +12,7 @@
             margin: 0;
             padding: 0;
             color: #333;
+            transition: margin-left 0.3s ease;
         }
 
         header {
@@ -30,56 +31,81 @@
             font-weight: 600;
         }
 
-        .button-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .add-button {
-            background-color: #4CAF50;
+        /* Sidebar Styles */
+        #sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            left: -250px;  /* Initial state: off-screen */
+            top: 0;
+            background-color: #333;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 60px;
             color: white;
-            padding: 12px 24px;
-            font-size: 18px;
-            border-radius: 5px;
+            z-index: 100;
+        }
+
+        #sidebar a {
+            padding: 10px 15px;
             text-decoration: none;
-            transition: background-color 0.3s ease;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.3s;
         }
 
-        .add-button:hover {
-            background-color: #45a049;
+        #sidebar a:hover {
+            background-color: #ddd;
+            color: black;
         }
 
+        #sidebar .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        #menuToggle {
+            font-size: 30px;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            z-index: 200;
+        }
+
+        /* Main Content Area */
+        .content {
+            margin-left: 0;
+            transition: margin-left 0.3s;
+        }
+
+        /* Search Bar Styles */
         .search-container {
             display: flex;
-            justify-content: center;
+            justify-content: flex-end;
             margin: 20px 0;
+            padding: 0 15px;
         }
 
         .search-bar {
-            width: 300px;
-            padding: 12px;
+            width: 250px;
+            padding: 10px;
             border-radius: 5px;
             border: 1px solid #ddd;
             font-size: 16px;
-            margin-right: 10px;
+            outline: none;
+            transition: border-color 0.3s ease;
         }
 
-        .search-button {
-            background-color: #007bff;
-            color: white;
-            padding: 12px 24px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+        .search-bar:focus {
+            border-color: #4CAF50;
         }
 
-        .search-button:hover {
-            background-color: #0056b3;
-        }
-
+        /* Table styles */
         table {
             width: 90%;
             margin: 0 auto;
@@ -122,19 +148,6 @@
             background-color: #e6f7ff;
         }
 
-        .actions a {
-            background-color: #007bff;
-            color: white;
-            padding: 8px 16px;
-            font-size: 14px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .actions a:hover {
-            background-color: #0056b3;
-        }
-
         footer {
             text-align: center;
             padding: 12px;
@@ -145,89 +158,95 @@
             bottom: 0;
             font-size: 14px;
         }
-
-        /* Responsive Design */
-        @media screen and (max-width: 768px) {
-            .button-container {
-                flex-direction: column;
-            }
-
-            .add-button {
-                width: 100%;
-                margin: 10px 0;
-            }
-
-            .search-container {
-                flex-direction: column;
-            }
-
-            .search-bar {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-
-            .search-button {
-                width: 100%;
-            }
-
-            table {
-                width: 100%;
-            }
-
-            th, td {
-                padding: 12px;
-                font-size: 14px;
-            }
-        }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Employee Management</h1>
-    </header>
-
-    <div class="button-container">
-        <a href="/employees/new" class="add-button">Add New Employee</a>
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()">×</a>
+        <a href="/employees/new">Add New Employee</a>
     </div>
 
-    <!-- Search Section -->
-    <div class="search-container">
-        <input type="text" id="searchBar" class="search-bar" placeholder="Search by name or department" oninput="searchEmployee()">
-    </div>
+    <!-- Sidebar Toggle Button -->
+    <span id="menuToggle" onclick="toggleSidebar()">&#9776;</span>
 
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Department</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="employee : ${employees}">
-                    <td th:text="${employee.id}"></td>
-                    <td th:text="${employee.name}"></td>
-                    <td th:text="${employee.email}"></td>
-                    <td th:text="${employee.department}"></td>
-                    <td class="actions">
-                        <a th:href="@{/employees/edit/{id}(id=${employee.id})}">Edit</a>
-                        <a th:href="@{/employees/delete/{id}(id=${employee.id})}" onclick="return confirm('Are you sure?')">Delete</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <!-- Main Content -->
+    <div class="content">
+        <header>
+            <h1>Employee Management</h1>
+        </header>
 
-    <footer>
-        <p>&copy; 2025 Employee Management System | All Rights Reserved</p>
-    </footer>
+        <!-- Search Bar -->
+        <div class="search-container">
+            <input type="text" id="searchBar" class="search-bar" placeholder="Search by name or department" oninput="searchEmployee()">
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="employee : ${employees}">
+                        <td th:text="${employee.id}"></td>
+                        <td th:text="${employee.name}"></td>
+                        <td th:text="${employee.email}"></td>
+                        <td th:text="${employee.department}"></td>
+                        <td class="actions">
+                            <a th:href="@{/employees/edit/{id}(id=${employee.id})}">Edit</a>
+                            <a th:href="@{/employees/delete/{id}(id=${employee.id})}" onclick="return confirm('Are you sure?')">Delete</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Employee Management System | All Rights Reserved</p>
+        </footer>
+    </div>
 
     <script>
-        // Live Search Functionality (Filtering Table while typing)
+        // Toggle Sidebar
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.querySelector('.content');
+
+            if (sidebar.style.left === "-250px" || sidebar.style.left === "") {
+                sidebar.style.left = "0";  // Open the sidebar
+                content.style.marginLeft = "250px";  // Shift the content
+            } else {
+                sidebar.style.left = "-250px";  // Close the sidebar
+                content.style.marginLeft = "0";  // Reset content margin
+            }
+        }
+
+        // Close Sidebar when clicking outside of it
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menuToggle');
+            
+            // Close sidebar when clicking outside of sidebar and menu toggle
+            if (sidebar.style.left === "0" && !sidebar.contains(event.target) && !menuToggle.contains(event.target)) {
+                sidebar.style.left = "-250px";  // Close the sidebar
+                document.querySelector('.content').style.marginLeft = "0";  // Reset content margin
+            }
+        });
+
+        // Prevent click event from propagating to the document when clicking inside the sidebar
+        document.getElementById('sidebar').addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+
+        // Live Search Functionality
         function searchEmployee() {
             let input = document.getElementById('searchBar');
             let filter = input.value.toUpperCase();

@@ -12,7 +12,7 @@ import com.ems.models.Employee;
 import com.ems.sservices.EmployeeService;
 
 @Controller
-@RequestMapping("/employees")
+//@RequestMapping("/employees")
 public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;

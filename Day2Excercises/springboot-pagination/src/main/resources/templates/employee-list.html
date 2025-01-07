@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #343a40;
+        }
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        table th, table td {
+            text-align: left;
+            padding: 12px;
+        }
+        table thead {
+            background-color: #4CAF50;
+            color: white;
+        }
+        table tbody tr:hover {
+            background-color: #f1f1f1;
+            cursor: pointer;
+        }
+        .pagination {
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .pagination li a {
+            color: #4CAF50;
+        }
+        .pagination li a:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .pagination li.active a {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .btn:hover {
+            background-color: #45a049;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Employee List</h1>
+
+    <!-- Search Bar -->
+    <div class="row mb-3">
+        <div class="col-md-4 offset-md-8">
+            <input type="text" class="form-control" placeholder="Search by Name or Department" id="searchInput">
+        </div>
+    </div>
+
+    <!-- Employee Table -->
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Department</th>
+            </tr>
+        </thead>
+        <tbody id="employeeTable">
+            <tr th:each="employee : ${employees.content}">
+                <td th:text="${employee.id}"></td>
+                <td th:text="${employee.name}"></td>
+                <td th:text="${employee.email}"></td>
+                <td th:text="${employee.department}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Pagination controls -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <a class="page-link" th:href="@{/employees(page=${currentPage - 1}, size=${5})}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link" th:text="'Page ' + (${currentPage + 1}) + ' of ' + ${totalPages}"></span>
+            </li>
+            <li class="page-item" th:classappend="${currentPage < totalPages - 1} ? '' : 'disabled'">
+                <a class="page-link" th:href="@{/employees(page=${currentPage + 1}, size=${5})}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Search functionality for the table
+    const searchInput = document.getElementById('searchInput');
+    const employeeTable = document.getElementById('employeeTable');
+
+    searchInput.addEventListener('keyup', function() {
+        const searchQuery = searchInput.value.toLowerCase();
+        const tableRows = employeeTable.getElementsByTagName('tr');
+
+        Array.from(tableRows).forEach(function(row) {
+            const cells = row.getElementsByTagName('td');
+            const rowText = Array.from(cells).map(cell => cell.textContent.toLowerCase()).join(' ');
+
+            if (rowText.includes(searchQuery)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

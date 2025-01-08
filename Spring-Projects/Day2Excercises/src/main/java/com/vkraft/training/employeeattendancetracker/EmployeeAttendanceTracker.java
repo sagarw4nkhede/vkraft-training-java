@@ -24,7 +24,7 @@ public class EmployeeAttendanceTracker {
 
 		System.out.println("\nAttendance for the week:");
 
-		System.out.print("Employee\\Day  ");
+		System.out.print("Employee\tDay  ");
 		for (int j = 0; j < numDays; j++) {
 			System.out.print("Day " + (j + 1) + "  ");
 		}

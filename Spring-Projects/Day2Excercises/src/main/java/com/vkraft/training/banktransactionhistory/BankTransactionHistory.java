@@ -20,7 +20,7 @@ public class BankTransactionHistory {
 			choice = scanner.nextInt();
 
 			switch (choice) {
-			case 1: // Deposit Money
+			case 1: 
 				System.out.print("Enter amount to deposit: ₹");
 				double depositAmount = scanner.nextDouble();
 				if (depositAmount > 0) {
@@ -31,7 +31,7 @@ public class BankTransactionHistory {
 				}
 				break;
 
-			case 2: // Withdraw Money
+			case 2: 
 				System.out.print("Enter amount to withdraw: ₹");
 				double withdrawAmount = scanner.nextDouble();
 				if (withdrawAmount > 0 && withdrawAmount <= balance) {
@@ -44,11 +44,11 @@ public class BankTransactionHistory {
 				}
 				break;
 
-			case 3: // Check Balance
+			case 3: 
 				System.out.println("Your current balance is: ₹" + balance);
 				break;
 
-			case 4: // Exit
+			case 4: 
 				System.out.println("Thank you for banking with us!");
 				break;
 
@@ -56,5 +56,6 @@ public class BankTransactionHistory {
 				System.out.println("Invalid choice. Please try again.");
 			}
 		} while (choice != 4);
+		scanner.close();
 	}
 }

@@ -24,7 +24,7 @@ public class EmployeeAttendanceTracker {
 
 		System.out.println("\nAttendance for the week:");
 
-		System.out.print("Employee\tDay  ");
+		System.out.print("Employee\\Day  ");
 		for (int j = 0; j < numDays; j++) {
 			System.out.print("Day " + (j + 1) + "  ");
 		}
@@ -33,7 +33,7 @@ public class EmployeeAttendanceTracker {
 		for (int i = 0; i < numEmployees; i++) {
 			System.out.print("Employee " + (i + 1) + "  ");
 			for (int j = 0; j < numDays; j++) {
-				System.out.print(attendance[i][j] + "      ");
+				System.out.print(attendance[i][j] + "  ");
 			}
 			System.out.println();
 		}
